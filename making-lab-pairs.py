@@ -1,83 +1,88 @@
-""" A quick script connected to a db to make lab pairs. """
+""" A quick script connected to a .txt file to make lab pairs. """
 
-# create db with corresponding class for Students
-# table consists of ID, name, pair_list
-# 
 import random
-# pull a dictionary of items {(id, 'name', set(pair_list)), ... }
-students = {1: ('Marjana', set([2, 3, 4, 5])),
-            2: ('Andra', set([1, 5, 3])),
-            3: ('Joy', set([4, 1, 5, 2])),
-            4: ('Sameea', set([3, 1])),
-            5: ('Emily', set([6, 2, 3, 1])),
-            6: ('Christina', set([5, 7, 8, 10])),
-            7: ('Nicole', set([8, 6, 10, 19])),
-            8: ('QueenTesa', set([7, 9, 6, 22])),
-            9: ('Celeste', set([10, 8, 13, 12])),
-            10: ('Kelsey', set([9, 22, 7, 6])),
-            11: ('Gabriella', set([12, 13, 16, 17])),
-            12: ('Melissa', set([11, 16, 22, 9])),
-            13: ('Kellie', set([14, 11, 9, 16])),
-            14: ('Rosemond', set([13, 23, 20, 21])),
-            15: ('Susmitha', set([16, 17, 23, 18])),
-            16: ('Quanisha', set([15, 12, 11, 13])),
-            17: ('Sarah', set([18, 15, 19, 11])),
-            18: ('Deepti', set([17, 19, 21, 15])),
-            19: ('Yuliana', set([20, 18, 17, 7])),
-            20: ('Jessica', set([19, 21, 14, 23])),
-            21: ('Noelle', set([22, 20, 18, 14])),
-            22: ('Sherry', set([21, 10, 12, 8])),
-            23: ('Kioshi', set([14, 15, 20]))
-            }
 
-# initiate todays_pairs
-# find starting length of students
-todays_pairs = []
-student_count = len(students)
-
-# loop: while more than 1 item is in dict, create pair variable 
-# randomly choose a number corresponding to one student from dictionary
-# remove student item from the dictionary, and save as variable
-while len(students) > 1:
-    first_num = 0
+def create_students(student_file):
+    """
+    open file, add student info into a dictionary
+    """
     
-    while True:
-        first_num = random.randint(1, student_count + 1)
-        if first_num not in set(students.keys()):
-            continue
-        else:
-            break
+    students = {}
+    s_file = open(student_file)
+    
+    for line in s_file:
+        line = line.rstrip()
+        student_info = line.split()
+        student_num = int(student_info[0])
+        student_name = str(student_info[1])
+        student_pairs = set([int(num) for num in student_info[2:]])
+        students[student_num] = (student_name, student_pairs)
         
-    first_student = students.pop(first_num)
-    
-    # initiate sercond_num, then loop and assign second_num to random number 
-    # if it is the same as first_num, or is within first_student's previous pairs,
-    # keep choosing a random number until it meets requirements    
-    second_num = 0
-    while True:
-        second_num = random.randint(1, student_count + 1)
-        if second_num not in set(students.keys()):
-            continue
-        if (second_num == first_num) or (second_num in first_student[1]):
-            continue
-        else:
-            break
-    
-    second_student = students.pop(second_num)
-    
-    # add student and partner names to today's pairs (nested lists? or nested tuples?)
-    todays_pairs.append([first_student[0], second_student[0]])
+    s_file.close()
+        
+    return(students)
 
-# add final name.
-if students:
-    last_num = list(students.keys())[0]
-    last_student = students.pop(last_num)
-    todays_pairs.append([last_student[0]])
 
-# second loop
+def create_pairs(students):
+    """ 
+    take in dictionary of student information and create pairs without repeats from previous labs
+    """
+
+    todays_pairs = []
+    student_count = len(students)
+
+    # loop: while more than 1 item is in dict
+    while len(students) > 1:
+        
+        # randomly choose first student in pair & update student info dict and num list
+        first_num = 0
+        while True:
+            first_num = random.randint(1, student_count + 1)
+            if first_num not in set(students.keys()):
+                continue
+            else:
+                break    
+        first_student = students.pop(first_num)
+        
+        # second student must not be the same as first, and must not be within first's previous pairs
+        # randomly choose second student in pair & update student info dict and num list
+        second_num = 0
+        while True:
+            second_num = random.randint(1, student_count + 1)
+            if second_num not in set(students.keys()):
+                continue
+            if (second_num == first_num) or (second_num in first_student[1]):
+                continue
+            else:
+                break
+        second_student = students.pop(second_num)
+        
+        # add student and partner names to today's pairs (nested lists? or nested tuples?)
+        todays_pairs.append([first_student[0], second_student[0]])
+
+    # if odd number, add leftover name
+    if students:
+        last_num = list(students.keys())[0]
+        last_student = students.pop(last_num)
+        todays_pairs.append([last_student[0]])
+    
+    # return pair list
+    return(todays_pairs)
+
+
+student_file = "student_file.txt"
+
+students = create_students(student_file)
+print('**** STUDENT DICTIONARY SUCCESS!!!! ****')
+print()
+
+todays_pairs = create_pairs(students)
+print('**** STUDENT PAIRS SUCCESS!!!! ****')
+
+
+
 # loop through pairs and print assignment to labs Malala a - g and ruth a - g
-for pair in todays_pairs:
-    print(pair)
+# for pair in todays_pairs:
+#     print(pair)
 
 
-# voila

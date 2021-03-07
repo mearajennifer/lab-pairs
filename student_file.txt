@@ -1,0 +1,23 @@
+1 Marjana 2 3 4 5
+2 Andra 1 5 3
+3 Joy 4 1 5 2
+4 Sameea 3 1
+5 Emily 6 2 3 1
+6 Christina 5 7 8 10
+7 Nicole 8 6 10 19
+8 QueenTesa 7 9 6 22
+9 Celeste 10 8 13 12
+10 Kelsey 9 22 7 6
+11 Gabriella 12 13 16 17
+12 Melissa 11 16 22 9
+13 Kellie 14 11 9 16
+14 Rosemond 13 23 20 21
+15 Susmitha 16 17 23 18
+16 Quanisha 15 12 11 13
+17 Sarah 18 15 19 11
+18 Deepti 17 19 21 15
+19 Yuliana 20 18 17 7
+20 Jessica 19 21 14 23
+21 Noelle 22 20 18 14
+22 Sherry 21 10 12 8
+23 Kioshi 14 15 20
