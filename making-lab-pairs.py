@@ -33,9 +33,37 @@ students = {1: ('Marjana', set([2, 3, 4, 5])),
 # make a variable with an empty list for todays pairs
 todays_pairs = []
 
-# first loop
-# randomly choose one student from dictionary, remove it from the dictionary, and save as variable
-# randomly choose a partner student from dictionary
+# loop: while more than 1 item is in dict, create pair variable 
+# randomly choose a number corresponding to one student from dictionary
+# remove student item from the dictionary, and save as variable
+
+while len(students) > 1:
+    a_pair = {}
+    first_num = random.randint(1, len(students)+1)
+    first_student = students.pop(first_num)
+    
+    # loop: assign second_num to random number 
+    # if it is the same as first_num, or is within first_student's previous pairs,
+    # choose a random number again until it meets requirements    
+    second_num = 0
+    while True:
+        second_num = random.randint(1, len(students)+1)
+        if second_num == first_num:
+            continue
+        elif second_num in first_student[1]:
+            continue
+        else:
+            break
+    
+    # then remove second student item from the dictionary, and save as variable
+    second_student = students.pop(second_num)
+            
+            
+        
+        
+
+
+# choose a r
 # if partner ID is in student's pair set, choose a different one
 # once you have a partner whose ID isn't in the pair set, remove student from dictionary and save as variable
 # add student and partner names to today's pairs (nested lists? or nested tuples?)
