@@ -30,47 +30,54 @@ students = {1: ('Marjana', set([2, 3, 4, 5])),
             23: ('Kioshi', set([14, 15, 20]))
             }
 
-# make a variable with an empty list for todays pairs
+# initiate todays_pairs
+# find starting length of students
 todays_pairs = []
+student_count = len(students)
 
 # loop: while more than 1 item is in dict, create pair variable 
 # randomly choose a number corresponding to one student from dictionary
 # remove student item from the dictionary, and save as variable
-
 while len(students) > 1:
-    a_pair = {}
-    first_num = random.randint(1, len(students)+1)
+    first_num = 0
+    
+    while True:
+        first_num = random.randint(1, student_count + 1)
+        if first_num not in set(students.keys()):
+            continue
+        else:
+            break
+        
     first_student = students.pop(first_num)
     
-    # loop: assign second_num to random number 
+    # initiate sercond_num, then loop and assign second_num to random number 
     # if it is the same as first_num, or is within first_student's previous pairs,
-    # choose a random number again until it meets requirements    
+    # keep choosing a random number until it meets requirements    
     second_num = 0
     while True:
-        second_num = random.randint(1, len(students)+1)
-        if second_num == first_num:
+        second_num = random.randint(1, student_count + 1)
+        if second_num not in set(students.keys()):
             continue
-        elif second_num in first_student[1]:
+        if (second_num == first_num) or (second_num in first_student[1]):
             continue
         else:
             break
     
-    # then remove second student item from the dictionary, and save as variable
     second_student = students.pop(second_num)
-            
-            
-        
-        
+    
+    # add student and partner names to today's pairs (nested lists? or nested tuples?)
+    todays_pairs.append([first_student[0], second_student[0]])
 
-
-# choose a r
-# if partner ID is in student's pair set, choose a different one
-# once you have a partner whose ID isn't in the pair set, remove student from dictionary and save as variable
-# add student and partner names to today's pairs (nested lists? or nested tuples?)
-# repeat until there are no more dictionary items
 # add final name.
+if students:
+    last_num = list(students.keys())[0]
+    last_student = students.pop(last_num)
+    todays_pairs.append([last_student[0]])
 
 # second loop
 # loop through pairs and print assignment to labs Malala a - g and ruth a - g
+for pair in todays_pairs:
+    print(pair)
+
 
 # voila
