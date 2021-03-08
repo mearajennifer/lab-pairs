@@ -98,11 +98,15 @@ def update_student_file(students_new, todays_pairs, student_file):
             students_new[first].append(second)
             students_new[second].append(first)
 
-    print(students_new)
-    # with open(student_file, "w") as f:
-    #     f.write("Hello, world!")
- 
-    return
+    with open(student_file, "w") as f:
+        for key, value in students_new.items():
+            updated_student = key
+            for item in value:
+                updated_student = updated_student + ' ' + item
+            updated_student = updated_student + '\n'
+            f.write(updated_student)
+            
+
 
 
 
@@ -115,11 +119,10 @@ print()
 
 todays_pairs, students_new = create_pairs(students)
 print('**** STUDENT PAIRS SUCCESS!!!! ****')
-print(todays_pairs)
 print()
 
 update_student_file(students_new, todays_pairs, student_file)
-# print('**** STUDENT FILE UPDATED!!!! ****')
+print('**** STUDENT FILE UPDATED!!!! ****')
 
 # print_lab_assignments(todays_pairs)
 print()
