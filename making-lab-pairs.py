@@ -8,17 +8,15 @@ def create_students(student_file):
     """
     
     students = {}
-    s_file = open(student_file)
     
-    for line in s_file:
-        line = line.rstrip()
-        student_info = line.split()
-        student_name = student_info[0]
-        student_pairs = set([name for name in student_info[1:]])
-        students[student_name] = student_pairs
-        
-    s_file.close()
-        
+    with open(student_file) as s_file:
+        for line in s_file:
+            line = line.rstrip()
+            student_info = line.split()
+            student_name = student_info[0]
+            student_pairs = [name for name in student_info[1:]]
+            students[student_name] = student_pairs
+            
     return(students)
 
 
@@ -29,6 +27,7 @@ def create_pairs(students):
 
     todays_pairs = []
     student_count = len(students)
+    students_new = {}
 
     # loop: while more than 1 item is in dict
     while len(students) > 1:
@@ -47,14 +46,19 @@ def create_pairs(students):
         second_student = (name, prev_pairs)
         
         todays_pairs.append([first_student, second_student])
+        students_new[first_student[0]] = first_student[1]
+        students_new[second_student[0]] = second_student[1]
+
 
     # if odd number, add leftover name
     if students:
         last_student = students.popitem()
         todays_pairs.append([last_student])
+        students_new[last_student[0]] = last_student[1]
+
     
     # return pair list
-    return(todays_pairs)
+    return(todays_pairs, students_new)
 
 
 def print_lab_assignments(todays_pairs):
@@ -62,7 +66,7 @@ def print_lab_assignments(todays_pairs):
     loop through pairs and print assignment to labs Malala a - g and ruth a - g
     """
     rooms = ['A', 'B', 'C', 'D', 'E', 'F']
-    
+        
     print('Malala:')
     for i in range(len(rooms)):
         room = rooms[i]
@@ -82,6 +86,24 @@ def print_lab_assignments(todays_pairs):
             print(room, room_pair[0][0])
 
 
+def update_student_file(students_new, todays_pairs, student_file):
+    """
+    rewrite student_file.txt with updated pair information
+    """
+        
+    for pair in todays_pairs:
+        if len(pair) > 1:
+            first = pair[0][0]
+            second = pair[1][0]
+            students_new[first].append(second)
+            students_new[second].append(first)
+
+    print(students_new)
+    # with open(student_file, "w") as f:
+    #     f.write("Hello, world!")
+ 
+    return
+
 
 
 student_file = "student_file.txt"
@@ -91,11 +113,15 @@ students = create_students(student_file)
 print('**** STUDENT DICTIONARY SUCCESS!!!! ****')
 print()
 
-todays_pairs = create_pairs(students)
+todays_pairs, students_new = create_pairs(students)
 print('**** STUDENT PAIRS SUCCESS!!!! ****')
+print(todays_pairs)
 print()
 
-print_lab_assignments(todays_pairs)
+update_student_file(students_new, todays_pairs, student_file)
+# print('**** STUDENT FILE UPDATED!!!! ****')
+
+# print_lab_assignments(todays_pairs)
 print()
 
 
