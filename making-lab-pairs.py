@@ -57,7 +57,35 @@ def create_pairs(students):
     return(todays_pairs)
 
 
+def print_lab_assignments(todays_pairs):
+    """ 
+    loop through pairs and print assignment to labs Malala a - g and ruth a - g
+    """
+    rooms = ['A', 'B', 'C', 'D', 'E', 'F']
+    
+    print('Malala:')
+    for i in range(len(rooms)):
+        room = rooms[i]
+        room_pair = todays_pairs[i]
+        if len(room_pair) == 2:
+                print(room, room_pair[0][0], room_pair[1][0])
+        else:
+            print(room, room_pair[0][0])
+    
+    print('Ruth:')
+    for i in range(len(rooms)):
+        room = rooms[i]
+        room_pair = todays_pairs[i+5]
+        if len(room_pair) == 2:
+                print(room, room_pair[0][0], room_pair[1][0])
+        else:
+            print(room, room_pair[0][0])
+
+
+
+
 student_file = "student_file.txt"
+print()
 
 students = create_students(student_file)
 print('**** STUDENT DICTIONARY SUCCESS!!!! ****')
@@ -67,12 +95,8 @@ todays_pairs = create_pairs(students)
 print('**** STUDENT PAIRS SUCCESS!!!! ****')
 print()
 
-# loop through pairs and print assignment to labs Malala a - g and ruth a - g
-for pair in todays_pairs:
-    if len(pair) == 2:
-        print(pair[0][0], pair[1][0])
-    else:
-        print(pair[0][0])
+print_lab_assignments(todays_pairs)
+print()
 
 
 
