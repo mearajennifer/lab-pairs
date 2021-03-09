@@ -105,7 +105,31 @@ def update_student_file(students_new, todays_pairs, student_file):
                 updated_student = updated_student + ' ' + item
             updated_student = updated_student + '\n'
             f.write(updated_student)
-            
+
+           
+def print_lab_assignments(todays_pairs):
+    """ 
+    loop through pairs and print assignment to labs Malala a - g and ruth a - g
+    """
+    rooms = ['A', 'B', 'C', 'D', 'E', 'F']
+        
+    print('Malala:')
+    for i in range(len(rooms)):
+        room = rooms[i]
+        room_pair = todays_pairs[i]
+        if len(room_pair) == 2:
+                print(room, room_pair[0][0], room_pair[1][0])
+        else:
+            print(room, room_pair[0][0])
+    
+    print('Ruth:')
+    for i in range(len(rooms)):
+        room = rooms[i]
+        room_pair = todays_pairs[i+6]
+        if len(room_pair) == 2:
+                print(room, room_pair[0][0], room_pair[1][0])
+        else:
+            print(room, room_pair[0][0])
 
 
 
@@ -124,7 +148,7 @@ print()
 update_student_file(students_new, todays_pairs, student_file)
 print('**** STUDENT FILE UPDATED!!!! ****')
 
-# print_lab_assignments(todays_pairs)
+print_lab_assignments(todays_pairs)
 print()
 
 
