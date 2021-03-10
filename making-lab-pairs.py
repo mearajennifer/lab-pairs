@@ -26,7 +26,6 @@ def create_pairs(students):
     """
 
     todays_pairs = []
-    student_count = len(students)
     students_new = {}
 
     # loop: while more than 1 item is in dict
@@ -49,41 +48,15 @@ def create_pairs(students):
         students_new[first_student[0]] = first_student[1]
         students_new[second_student[0]] = second_student[1]
 
-
     # if odd number, add leftover name
     if students:
         last_student = students.popitem()
-        todays_pairs.append([last_student])
+        todays_pairs[-1].extend([last_student])
         students_new[last_student[0]] = last_student[1]
-
+        
     
     # return pair list
     return(todays_pairs, students_new)
-
-
-def print_lab_assignments(todays_pairs):
-    """ 
-    loop through pairs and print assignment to labs Malala a - g and ruth a - g
-    """
-    rooms = ['A', 'B', 'C', 'D', 'E', 'F']
-        
-    print('Malala:')
-    for i in range(len(rooms)):
-        room = rooms[i]
-        room_pair = todays_pairs[i]
-        if len(room_pair) == 2:
-                print(room, room_pair[0][0], room_pair[1][0])
-        else:
-            print(room, room_pair[0][0])
-    
-    print('Ruth:')
-    for i in range(len(rooms)):
-        room = rooms[i]
-        room_pair = todays_pairs[i+5]
-        if len(room_pair) == 2:
-                print(room, room_pair[0][0], room_pair[1][0])
-        else:
-            print(room, room_pair[0][0])
 
 
 def update_student_file(students_new, todays_pairs, student_file):
@@ -92,11 +65,16 @@ def update_student_file(students_new, todays_pairs, student_file):
     """
         
     for pair in todays_pairs:
-        if len(pair) > 1:
-            first = pair[0][0]
-            second = pair[1][0]
-            students_new[first].append(second)
-            students_new[second].append(first)
+        first = pair[0][0]
+        second = pair[1][0]
+        students_new[first].append(second)
+        students_new[second].append(first)
+        
+        if len(pair) > 2:
+            third =pair[2][0]
+            students_new[first].append(third)
+            students_new[second].append(third)
+            students_new[third].extend([first, second])            
 
     with open(student_file, "w") as f:
         for key, value in students_new.items():
@@ -107,34 +85,36 @@ def update_student_file(students_new, todays_pairs, student_file):
             f.write(updated_student)
 
            
-def print_lab_assignments(todays_pairs):
+def print_lab_assignments(todays_pairs, output_file):
     """ 
-    loop through pairs and print assignment to labs Malala a - g and ruth a - g
+    loop through pairs and write assignments for Malala a - g and ruth a - g to output file
     """
+
     rooms = ['A', 'B', 'C', 'D', 'E', 'F']
-        
-    print('Malala:')
-    for i in range(len(rooms)):
-        room = rooms[i]
-        room_pair = todays_pairs[i]
-        if len(room_pair) == 2:
-                print(room, room_pair[0][0], room_pair[1][0])
-        else:
-            print(room, room_pair[0][0])
     
-    print('Ruth:')
-    for i in range(len(rooms)):
-        room = rooms[i]
-        room_pair = todays_pairs[i+6]
-        if len(room_pair) == 2:
-                print(room, room_pair[0][0], room_pair[1][0])
-        else:
-            print(room, room_pair[0][0])
-
-
+    with open(output_file, "w") as f:
+        f.write('Malala')
+        for i in range(len(rooms)):
+            room = rooms[i]
+            room_pair = todays_pairs[i]
+            line = '\n' + room + ' '
+            for student in room_pair:
+                line = line + student[0] + ' '
+            f.write(line) 
+        
+        f.write('\n')
+        f.write('Ruth')
+        for i in range(len(rooms) - 1):
+            room = rooms[i]
+            room_pair = todays_pairs[i+6]
+            line = '\n' + room + ' '
+            for student in room_pair:
+                line = line + student[0] + ' '
+            f.write(line) 
 
 
 student_file = "student_file.txt"
+output_file = "output.txt"
 print()
 
 students = create_students(student_file)
@@ -147,9 +127,10 @@ print()
 
 update_student_file(students_new, todays_pairs, student_file)
 print('**** STUDENT FILE UPDATED!!!! ****')
-
-print_lab_assignments(todays_pairs)
 print()
+
+print_lab_assignments(todays_pairs, output_file)
+print('**** STUDENT PAIRS SENT TO OUTPUT FILE ****')
 
 
 
