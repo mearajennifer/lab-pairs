@@ -94,7 +94,7 @@ def print_lab_assignments(todays_pairs, output_file):
     a - g and Ruth a - g to output file
     """
 
-    rooms = ['**A**', '**B**', '**C**', '**D**', '**E**', '**F**']
+    rooms = ['**A**', '**B**', '**C**', '**D**', '**E**', '**F**', '**G**']
     
     with open(output_file, "w") as f:
         f.write('**Malala**')
@@ -110,7 +110,7 @@ def print_lab_assignments(todays_pairs, output_file):
         f.write('**Ruth**')
         for i in range(len(rooms) - 1):
             room = rooms[i]
-            room_pair = todays_pairs[i+6]
+            room_pair = todays_pairs[i+7]
             line = '\n' + room + ' '
             for student in room_pair:
                 line = line + student[0] + '      '
